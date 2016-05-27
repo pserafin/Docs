@@ -38,14 +38,14 @@ Routing is enabled in the ``Configure`` method in the ``Startup`` class. Create 
 .. literalinclude:: routing/sample/RoutingSample/Startup.cs
   :dedent: 8
   :language: c#
-  :lines: 20-37
-  :emphasize-lines: 6-8,10,18
+  :lines: 20-38
+  :emphasize-lines: 6-9,11,19
   
 Pass ``UseRouter`` the result of the ``RouteBuilder.Build`` method.
 
 .. tip:: If you are only configuring a single route, you can simply call ``app.UseRouter`` and pass in the ``IRouter`` instance you wish to use, bypassing the need to use a ``RouteBuilder``.
 
-The ``defaultEndpoint`` route handler is used as the default for the ``RouteBuilder``. Calls to ``MapRoute`` will use this handler by default. A second handler is configured within the ``HelloRouter`` instance added by the ``AddHelloRoute`` extension method.
+The ``defaultHandler`` route handler is used as the default for the ``RouteBuilder``. Calls to ``MapRoute`` will use this handler by default. A second handler is configured within the ``HelloRouter`` instance added by the ``AddHelloRoute`` extension method. This extension methods adds a new ``Route`` to the ``RouteBuilder``, passing in an instance of ``IRouter``, a template string, and an ``IInlineConstraintResolver`` (which is responsible for enforcing any route constraints specified):
 
 .. literalinclude:: routing/sample/RoutingSample/HelloExtensions.cs
   :language: c#
@@ -53,7 +53,7 @@ The ``defaultEndpoint`` route handler is used as the default for the ``RouteBuil
   :dedent: 8
   :emphasize-lines: 5
 
-``HelloRouter`` is a custom ``IRouter`` implementation. ``AddHelloRoute`` adds an instance of this router to the ``RouteBuilder`` using a template string, "hello/{name:alpha}". This template will only match requests of the form "hello/{name}" where `name` is constrained to be alphabetical. Matching requests will be handled by ``HelloRouter``, which responds to requests with a simple greeting.
+``HelloRouter`` is a custom ``IRouter`` implementation. ``AddHelloRoute`` adds an instance of this router to the ``RouteBuilder`` using a template string, "hello/{name:alpha}". This template will only match requests of the form "hello/{name}" where `name` is constrained to be alphabetical. Matching requests will be handled by ``HelloRouter`` (which implements the ``IRouter`` interface), which responds to requests with a simple greeting.
 
 .. literalinclude:: routing/sample/RoutingSample/HelloRouter.cs
   :language: c#
@@ -229,7 +229,6 @@ The example below shows how to generate a link to a route given a dictionary of 
   :lines: 39-59
   :dedent: 12
   :emphasize-lines: 2-3,7,13-14,19-20
-  :linenos:
 
 The ``VirtualPath`` generated at the end of the sample above is ``/package/create/123``.
 

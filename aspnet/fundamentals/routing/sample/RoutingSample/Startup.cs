@@ -22,11 +22,12 @@ namespace RoutingSample
         {
             loggerFactory.AddConsole(minLevel: LogLevel.Trace);
 
-            var defaultEndpoint = new RouteHandler((c) => 
-            c.Response.WriteAsync($"Hello world! Route values: " +
-                                  $"{string.Join(", ", c.GetRouteData().Values)}"));
+            var defaultHandler = new RouteHandler((c) => 
+                c.Response.WriteAsync($"Hello world! Route values: " +
+                $"{string.Join(", ", c.GetRouteData().Values)}")
+                );
 
-            var routeBuilder = new RouteBuilder(app, defaultEndpoint);
+            var routeBuilder = new RouteBuilder(app, defaultHandler);
 
             routeBuilder.AddHelloRoute(app);
 

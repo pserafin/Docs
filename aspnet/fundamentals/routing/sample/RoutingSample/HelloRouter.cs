@@ -14,7 +14,7 @@ namespace RoutingSample
             {
                 return Task.FromResult(0);
             }
-            var requestPath = context.HttpContext.Request.Path.Value ?? string.Empty;
+            var requestPath = context.HttpContext.Request.Path.Value;
             if (requestPath.StartsWith("/hello", StringComparison.OrdinalIgnoreCase))
             {
                 context.Handler = async c =>
